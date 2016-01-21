@@ -4,11 +4,16 @@
 permalink:           pretty
 
 # Setup
-title:               Dylan Codes
-tagline:             Blog and portfolio for Dylan Barnard.
+title:               Dylan Barnard
 url:                 http://dylankb.github.io/
 paginate:            1
 baseurl:             ""
+
+# Structure
+pages_list:
+  About: '/about'
+  Archive: '/archive'
+
 
 # Assets
 #
