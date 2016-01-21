@@ -4,11 +4,11 @@
 permalink:           pretty
 
 # Setup
-title:               Poole
-tagline:             The Jekyll Butler
-url:                 http://getpoole.com
+title:               Dylan Codes
+tagline:             Blog and portfolio for Dylan Barnard.
+url:                 http://dylankb.github.io/
 paginate:            1
-baseurl:             "http://dylankb.github.io/poole/"
+baseurl:             ""
 
 # Assets
 #
@@ -28,7 +28,7 @@ gems:
 # About/contact
 author:
   name:              Dylan Barnard
-  url:               https://twitter.com/mdo
+  url:               http://dylankb.github.io/
   email:             dylan.barnard@gmail.com
 
 # Custom vars
