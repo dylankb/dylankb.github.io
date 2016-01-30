@@ -11,8 +11,8 @@ baseurl:             ""
 
 # Structure
 pages_list:
-  About: '/about'
-  Archive: '/archive'
+  About: '/about/'
+  Archive: '/archive/'
 
 
 # Assets
