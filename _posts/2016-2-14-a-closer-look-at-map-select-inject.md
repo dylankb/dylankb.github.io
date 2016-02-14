@@ -10,13 +10,13 @@ Sometimes you find and awesome tool and start using it. It doesn't matter if thi
 1. Harder to fix it when it breaks
 2. Harder to know when to use it
 
-It wasn't until someone pointed out that I didn't have a great grasp about how methods like `select','map', and 'inject' that I realized this. After looking into exactly how blocs are implemented in Ruby using yield and doing a little experimentation I feel like the next debugging session won't be such a nightmare.
+It wasn't until someone pointed out that I didn't have a great grasp about how methods like `select`,`map`, and `inject` work that I realized this. After looking into exactly how blocs are implemented in Ruby using yield and doing a little experimentation I feel like the next debugging session won't be such a nightmare.
 
 **`select`**
 
 The ruby-docs definition of select is: “returns an array containing all elements of enum for which the given block returns a true value.” 
 
-```ruby
+```
 def select(array)    #Basic implementation
 
   result = []
