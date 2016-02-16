@@ -3,21 +3,21 @@ layout: post
 title: "A Closer Look at Select, Map, and Inject: Avoiding Common Gotchas"
 ---
 
-After learning the basic components of the Ruby syntax I started to use more advanced, sometimes Ruby specific methods. You know, the nifty ones.
+After learning the basic components of the Ruby syntax I started to use more advanced, sometimes Ruby specific methods. You know, the nifty ones in [Enumerable](http://ruby-doc.org/core-2.3.0/Enumerable.html).
 
-Sometimes you find and awesome tool and start using it. It doesn't matter if this is a nail gun or a standard library method, I've come to the conclusion that if you don't know how to wield the tool properly it's
+Sometimes you find and awesome tool and just immediately start using it. Often times that's fine, but whether it's a nail gun or a standard library method if you don't know how the tool actually works it's
 
 1. Harder to fix it when it breaks
 2. Harder to know when to use it
 
-It wasn't until someone pointed out that I didn't have a great grasp about how methods like `select`,`map`, and `inject` work that I realized this. After looking into exactly how blocs are implemented in Ruby using yield and doing a little experimentation I feel like the next debugging session won't be such a nightmare.
+It wasn't until someone asked me what would happen if they put a stray `puts` inside a `select`,`map`, or `inject` that I realized I didn't 100% grasp how these method worked internally. After looking into exactly how blocs are implemented in Ruby using yield and doing a little experimentation, I feel like the next debugging session won't be such a nightmare.
 
-**`select`**
+### 1) **`select`**
 
 The ruby-docs definition of select is: “returns an array containing all elements of enum for which the given block returns a true value.” 
 
-```
-def select(array)    #Basic implementation
+```ruby
+def select(array)    #Basic implementation of select
 
   result = []
   counter = 0
@@ -42,6 +42,8 @@ Arguably a more precise way of phrasing this definition is to say it returns an 
 => [1,2,3]
 ```
 
+If I saw this code before I'd probably furrow my brows and mutter something about trying to memorize this weird behavior. By creating my own `select` method though, I find it way easier to understand what's going on here. Looking at line 8 you can actually see the method taking in each value the collection, if the the block is evaluated as truthy by `yield(current_element)` then that item is pushed to a new array.
+
 Like methods, the last line executed in the block is the block’s return value
 
 ```ruby
@@ -52,8 +54,9 @@ Like methods, the last line executed in the block is the block’s return value
 => []
 ```
 
+Working through the lines of our implementation we can see why the return value of the method call was an empty array. `puts` always returns a `nil` value, and `nil` (along with false) are "falsey", and therefore not pushed to the new array.
 
-**`map`**
+### 2) **`map`**
  
 Map returns an array of the results of running block on each value in a collection. 
 
@@ -70,7 +73,7 @@ def map(arr, default=0) # Basic implementation
 end
 ```
 
-This is very different from how `select` works.
+This is very different from how `select` works, as demonstrated below.
 
 ```ruby
 >> output = [1,2,3].map do |num| 
@@ -79,7 +82,9 @@ This is very different from how `select` works.
 => [true, true, false]
 ```
 
-Even if you understand that the above code is incorrect, you must be very careful when using `select` like logic in your `map` block -  remember that every element will be modified the return of the block (or in other words the last line to execute during that iteration).
+Again, using the implementation and looking at line 6 you can actually see the method taking in each value the collection, setting that value to the result of the block, and then pushing that item to a new array.
+
+I think the above code demonstrates that you must be very careful when using `select` like logic in your `map` block -  remember that every element will be modified by the return of the block (or in other words each new element is whatever last line of the block returns during that iteration).
 
 ```ruby
 >> output = [1,2,3].map do |num|
@@ -87,19 +92,20 @@ Even if you understand that the above code is incorrect, you must be very carefu
 >>     num = 'X'
 >>   end
 >> end
-=> [nil, nil, ‘X’]
+=> [nil, nil, 'X']
 ```
 
-In the example above the block checks whether `num` is equal to 3. If a variable is equal to 1 and you enter:
+Again, weirdness. In the example above the block checks whether `num` is equal to 3. Let's check why this is happening by testing out a snippet in the terminal.
 
 ```ruby
->>   if num == 3
->>     num = 'X'
->>   end
+>>  num = 2
+>>  if num == 3
+>>    num = 'X'
+>>  end
+=> nil
 ```
 
-in your terminal then the return value is `nil`. Therefore each element that does not equal 3 will have a return value of nil. A way to address this is create a logic flow in your block where each element is positively evaluated.
-
+The return value is `nil`, and therefore each element that does not equal 3 will have a return value of `nil`. A way to address this is create a logic flow in your block where each element is positively evaluated.
 
 ```ruby
 >>   if num == 3
@@ -107,19 +113,21 @@ in your terminal then the return value is `nil`. Therefore each element that doe
 >>   else
 >>     num
 >>   end
+=> [1, 2, 'X']
 ```
 
-Or a shorter version 
-`>>   num == 3 ? ‘X’ : num`
+Ah, this gets us to a more normal behavior. We can also shorten a couple lines of our code by using a ternary operator.
 
-**`reduce`/`inject`**
+```ruby
+num == 3 ? ‘X’ : num
+```
+
+### 3) **`reduce`/`inject`**
 
 Reduce yields each element in a collection plus an accumulator to the block. 
 
-Basic implementation
-
 ```ruby
-def reduce(array, ival=0)  #Basic implementation
+def reduce(array, ival=0)     #Basic implementation of reduce
   counter = 0
   sum = ival
 
@@ -142,7 +150,12 @@ The accumulator is set to the value returned by the block, and then passed on to
 >> end
 # => 3
 ```
-In the example above when `1` is yielded to to the block, and is then set to the accumulator since num (1) is the expression evaluated. In the next yield the accumulator will be set to `2` and so on. Due to method definition reduce will not add each element returning a truthy value to an array unlike select unless specified in the block.
+In the example above `1` is the first value for `num` and the first to be yielded to to the block. The accumulator object `acc` is then set to `1`.
+
+
+
+
+In the next yield the accumulator will be set to `2` and so on. Due to method definition reduce will not add each element returning a truthy value to an array unlike select unless specified in the block.
 
 ```ruby
 >> result = [1,2,3].reduce([]) do |acc, num| 
@@ -151,4 +164,4 @@ In the example above when `1` is yielded to to the block, and is then set to the
 # => [1,2,3]
 ```
 
-I'm sure I'll continue to haphazardly wield shiny things in the future. At least next time a may know more about what I don't know, so to speak. :)
+I'm sure I'll continue to haphazardly wield shiny things in the future. At least next time I may know more about what I don't know, so to speak. :)
