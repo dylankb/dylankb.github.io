@@ -1,6 +1,13 @@
 # Permalinks
-#
 # Use of `relative_permalinks` ensures post links from the index work properly.
+defaults:
+  -
+    scope:
+      path: "" # an empty string here means all files in the project
+      type: "posts"
+    values:
+      permalink: 'blog/:title'
+
 permalink:           pretty
 
 # Setup
@@ -14,14 +21,12 @@ pages_list:
   About: '/about/'
   Archive: '/archive/'
 
-
 # Assets
 #
 # We specify the directory for Jekyll so we can use @imports.
 sass:
   sass_dir:          _sass
   style:            :compressed
-
 
 # Plugins
 gems:               
