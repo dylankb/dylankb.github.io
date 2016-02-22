@@ -35,7 +35,7 @@ def select(array)    #Basic implementation of select
 end
 ```
 
-Arguably a more precise way of phrasing this definition is to say it returns an array of elements of enum for which the given block returns a “truthy” value.
+Arguably a more precise way of phrasing this definition is to say it "returns an array of elements of enum for which the given block returns a *'truthy'* value.
 
 ```ruby
 >> result = [1,2,3].select do |num|
@@ -44,7 +44,7 @@ Arguably a more precise way of phrasing this definition is to say it returns an 
 => [1,2,3]
 ```
 
-If I saw this code before trying these experiments I'd probablyfurrow my brows and mutter something about trying to memorize this weird behavior. By creating my own `select` method though, I find it way easier to understand what's going on here. Looking at line 8 you can actually see the method taking in each value the collection, and if value passed into the block is evaluated as truthy by way of `yield(current_element)` then that value is pushed to the new array of values.
+If I saw this code before trying these experiments I'd probably frown and mutter something about trying to memorize this weird behavior. By creating my own `select` method though, I find it way easier to understand what's going on here. Looking at line 8 you can actually see the method taking in each value the collection, and if value passed into the block is evaluated as truthy by way of `yield(current_element)` then that value is pushed to the new array of values.
 
 Like methods, the last line executed in the block is the block’s return value
 

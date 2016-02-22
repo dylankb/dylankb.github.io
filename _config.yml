@@ -6,7 +6,7 @@ defaults:
       path: "" # an empty string here means all files in the project
       type: "posts"
     values:
-      permalink: 'blog/:title'
+      permalink: 'archive/:title'
 
 permalink:           pretty
 
@@ -20,6 +20,7 @@ baseurl:             ""
 pages_list:
   About: '/about/'
   Archive: '/archive/'
+  Projects: '/projects/'
 
 # Assets
 #
