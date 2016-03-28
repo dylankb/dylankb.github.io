@@ -1,9 +1,10 @@
 ---
 layout: post
 title: "A Beginner's Guide to Creating a Simple, Free Jekyll 3 Blog"
+comments: true
 ---
 
-The goal of this blog post is to allow anyone with at least some technical curiousity to set up a fast and free blog or pesonal website that doesn't look half bad. 
+The goal of this blog post is to allow anyone with at least some technical curiousity to set up a fast and free blog or pesonal website that doesn't look half bad.
 
 1. **Fast** - We'll be using Jekyll, a static site generator, which does not use a database which is part of what will make our site [fast](http://blog.formkeep.com/why-you-should-use-a-static-site-generator/). 
 2. **Free** - The free is because we are going to use [Github Pages](https://pages.github.com/) to host our site for free. 

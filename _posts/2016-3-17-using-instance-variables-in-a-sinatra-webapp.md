@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Using Instance Variables in a Sinatra Webapp"
+comments: true
 ---
 
 I'm trying to get into the habit of taking notes with code examples for concepts that aren't quite clear to me - think "rubber duck note-taking". I wasn't super clear about the uses of instance variables in Sinatra routes, so I went through this exercise here.

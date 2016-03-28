@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "A Closer Look at Select, Map, and Inject: Avoiding Common Gotchas"
+comments: true
 ---
 
 After learning the basic components of the Ruby syntax I started to use more advanced, sometimes Ruby specific methods. You know, the nifty ones in [Enumerable](http://ruby-doc.org/core-2.3.0/Enumerable.html).

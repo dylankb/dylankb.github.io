@@ -1,6 +1,7 @@
 ---
 layout: post
 title: What a Blog
+comments: true
 ---
 
 ### Writing Documentation for the Mind
