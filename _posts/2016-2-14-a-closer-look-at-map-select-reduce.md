@@ -1,23 +1,27 @@
 ---
 layout: post
-title: "A Closer Look at Select, Map, and Inject: Avoiding Common Gotchas"
+title: "A Closer Look at <code>select</code>, <code>map</code>, and <code>reduce</code>: Avoiding Common Gotchas"
 comments: true
 ---
 
-After learning the basic components of the Ruby syntax I started to use more advanced, sometimes Ruby specific methods. You know, the nifty ones in [Enumerable](http://ruby-doc.org/core-2.3.0/Enumerable.html).
+After learning the basic components of the Ruby syntax I started to use some of the more complicated methods that make Ruby such a fun language. You know, the nifty ones in [Enumerable](http://ruby-doc.org/core-2.3.0/Enumerable.html).
 
-Sometimes you find and awesome tool and just immediately start using it. Often times that's fine, but whether it's a nail gun or a standard library method if you don't know how the tool actually works it's
+Sometimes you find and awesome tool and just immediately start using it. Often times that's fine, but whether it's a nail gun or a standard library method if you don't know how the tool actually works it's:
 
 1. Harder to fix it when it breaks
 2. Harder to know when to use it
 
 It wasn't until someone asked me what would happen if they put a stray `puts` inside a `select`,`map`, or `inject` that I realized I didn't 100% grasp how these method worked internally. After looking into exactly how blocs are implemented in Ruby using yield and doing a little experimentation, I feel like the next debugging session won't be such a nightmare.
 
+To make sure we're on the same page, I'd recommend first reading another blog post of mine [here]({{ site.url }}{% link _posts/2016-2-14-a-closer-look-at-map-select-reduce.md %}) that goes over 1) how blocks work at a basic level, and 2) how to create methods that use blocks.
+
+### Looking at select, map, and reduce
+
 Below I've included basic implementations of the methods `select`, `map`, and `reduce`to illustrate how these methods work internally. I won't use these implementations in the example snippets (although they work just fine) to make it less confusing and easier to run the snippets on your own computer. Let's start with ...
 
 ### 1) **`select`**
 
-The ruby-docs definition of select is: “returns an array containing all elements of enum for which the given block returns a true value.” 
+The ruby-docs definition of select is: “returns an array containing all elements of enum for which the given block returns a true value.”
 
 ```ruby
 def select(array)    #Basic implementation of select
@@ -36,6 +40,8 @@ def select(array)    #Basic implementation of select
 end
 ```
 
+**Pay attention to the return value**
+
 Arguably a more precise way of phrasing this definition is to say it "returns an array of elements of enum for which the given block returns a *'truthy'* value.
 
 ```ruby
@@ -45,7 +51,9 @@ Arguably a more precise way of phrasing this definition is to say it "returns an
 => [1,2,3]
 ```
 
-If I saw this code before trying these experiments I'd probably frown and mutter something about trying to memorize this weird behavior. By creating my own `select` method though, I find it way easier to understand what's going on here. Looking at line 8 you can actually see the method taking in each value the collection, and if value passed into the block is evaluated as truthy by way of `yield(current_element)` then that value is pushed to the new array of values.
+If I saw this code before trying these experiments I'd probably frown and mutter something about trying to memorize this weird behavior. By creating my own `select` method though, I find it way easier to understand what's going on here. Let's review what's going on here.
+
+Looking at line 8 you can actually see the method taking in each value the collection, and if the value passed into the block is evaluated as truthy by way of `yield(current_element)` then that value is pushed to the new array of values. In the example above `0` is a truthy value so each return value from yielding to the block is truthy, therefore each array element gets passed to `result`.
 
 Like methods, the last line executed in the block is the block’s return value
 
@@ -60,17 +68,17 @@ Like methods, the last line executed in the block is the block’s return value
 Working through the lines of our implementation we can see why the return value of the method call was an empty array. `puts` always returns a `nil` value, and `nil` (along with false) are "falsey", and therefore not pushed to the new array.
 
 ### 2) **`map`**
- 
-Map returns an array of the results of running block on each value in a collection. 
+
+Map returns an array of the results of running block on each value in a collection. I'll also switch to iterating with `each` to simplify things.
 
 ```ruby
-def map(arr, default=0) # Basic implementation
+def map(arr) # Basic implementation
   count = 0
   output = []
 
-  while count < arr.size
-    output << yield(arr[count])
-    count +=1
+  arr.each do |element|
+    output << yield(element)
+    count += 1
   end
   output
 end
@@ -79,13 +87,15 @@ end
 This is very different from how `select` works, as demonstrated below.
 
 ```ruby
->> output = [1,2,3].map do |num| 
+>> output = [1,2,3].map do |num|
 >>   num < 3
 >> end
 => [true, true, false]
 ```
 
 Again, using the implementation and looking at line 6 you can actually see the method taking in each value the collection, setting that value to the result of the block, and then pushing that item to a new array.
+
+**Keep paying attention to the return value**
 
 I think the above code demonstrates that you must be very careful when using `select` like logic in your `map` block -  remember that every element will be modified by the return of the block (or in other words each new element is whatever the last line of the block returns during that iteration).
 
@@ -127,7 +137,7 @@ num == 3 ? 'X' : num
 
 ### 3) **`reduce`/`inject`**
 
-Reduce yields each element in a collection plus an accumulator to the block. 
+Reduce yields each element in a collection plus an accumulator to the block.
 
 ```ruby
 def reduce(array, ival=0)     #Basic implementation of reduce
@@ -137,7 +147,7 @@ def reduce(array, ival=0)     #Basic implementation of reduce
   while counter < array.size
     current_element = array[counter]
     sum = yield(sum, current_element)
-    counter += 1 
+    counter += 1
   end
   sum
 end
@@ -146,23 +156,36 @@ end
 The accumulator is set to the value returned by the block, and then passed on to the next yield. Therefore even if you set the default accumulator to an empty array, reduce will still work very differently than `map` or `select`.
 
 ```ruby
->> result = [1,2,3].reduce([]) do |acc, num| 
->>   num 
+>> result = [1,2,3].reduce([]) do |acc, num|
+>>   num * 2
 >> end
-# => 3
+# => 6
 ```
 In the example above `1` is the first value for `num` and the first to be yielded to the block. The accumulator object `acc` is then set to `1`.
-
-
-
 
 In the next yield the accumulator will be set to `2` and so on. Due to its method definition, `reduce` will not add each element returning a truthy value to an array unlike `select` unless specified in the block.
 
 ```ruby
->> result = [1,2,3].reduce([]) do |acc, num| 
->>   acc << num 
+>> result = [1,2,3].reduce([]) do |acc, num|
+>>   acc << num * 2
 >> end
-# => [1,2,3]
+# => [2,4,6]
 ```
+
+**Should we pay attention to the return value?**
+
+The accumulator is able to carry the accumulator (a given value or collection) across iterations because the accumulator is returned at the end of each block. Below the correct accumulator is not returned.
+
+```ruby
+>> result = [1,2,3].reduce([]) do |acc, num|
+>>   acc << num * 2
+>>   puts 'hi'
+>> end
+
+=> 'hi'
+=> # Error: Undefined method '<<' for nil:NilClass
+```
+
+This is easier to tell by looking at this line `sum = yield(sum, current_element)`. In this example, `puts` returns `nil`, so if we pass `nil` and the the current element into the block, it will try to do `nil << 2 * 2`, which throws an error.
 
 I'm sure I'll continue to haphazardly wield shiny things in the future. At least next time I may know more about what I don't know, so to speak. :)
