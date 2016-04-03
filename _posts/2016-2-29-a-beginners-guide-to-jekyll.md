@@ -2,6 +2,7 @@
 layout: post
 title: "A Beginner's Guide to Creating a Simple, Free Jekyll 3 Blog"
 comments: true
+related: ["Customizing your Jekyll Blog: Adding Comments, Sections, Custom Related Posts, and more!"]
 ---
 
 The goal of this blog post is to allow anyone with at least some technical curiousity to set up a fast and free blog or pesonal website that doesn't look half bad.
@@ -31,7 +32,7 @@ I try to flag programs that aren't strickly required if you're not a programmer,
 5. Install a text editor
 6. Install a Ruby version manager (optional)
 
-A great blog post that goes over how to do steps 1, 2, 3, 5, and 6 is [here](https://launchschool.com/blog/how-to-install-ruby-on-rails-development-environment-for-mac-os-x). It does go depth into utilizing programming tools, so I include some alternative links and steps that you can follow below as well.
+A great blog post on setting up a machine to do Ruby on Raiils development over how to do steps 1, 2, 3, 5, and 6 is [here](https://launchschool.com/blog/how-to-install-ruby-on-rails-development-environment-for-mac-os-x). It does go deep into utilizing programming tools, so I include some alternative links and steps that you can follow below as well.
 
 #### Install Node.js, Homebrew, and Xcode. 
 
@@ -47,7 +48,7 @@ To set up our Jekyll site you will be working in code, so it's best to have a te
 2. Set up Github account and install command line tools 
 3. Install a text editor
 
-A companion blog installation blog post to the Mac OSX guide is [here](https://launchschool.com/blog/how-to-install-ruby-on-rails-development-environment-for-linux) for Linux users.
+A companion blog  to the Mac OSX guide for Linux users is [here](https://launchschool.com/blog/how-to-install-ruby-on-rails-development-environment-for-linux) for Linux users.
 
 #### Git and Github
 
@@ -63,18 +64,17 @@ Mac
 Linux 
 `sudo apt-get install git`
 
-### (Optional) Set up RBENV to manage Ruby versions
+### (Optional) Set up rbenv to manage Ruby versions
 
-If you're going to be using Ruby for web development then it's highly recommended to install either RVM or RBENV to manage your Rubies. I've always used RBENV, and it's served me well. 
+If you're going to be using Ruby for web development then it's highly recommended to install either [rvm](https://rvm.io/) or [rbenv](https://github.com/rbenv/rbenv) to manage your Rubies. I've always used rbenv, and it's served me well. 
 
 For Mac users that are only using Ruby in order to get set up with Jekyll you probably don't need to go any further since most Macs have Ruby 2.0 preinstalled. However if when you type `ruby -v` into your terminal and get back something less than 1.9.3 or an error message then you'll need to install Ruby.
 
-Using Homebrew follow these instructions [here](https://github.com/rbenv/rbenv#homebrew-on-mac-os-x) to setup RBENV. Remember to set your global Ruby version!
+If you do decide to set up rbenv, the only thing that should be noted is that all you need to do when installing it via Homebrew is run `brew install rbenv` as per the documentation [here](https://github.com/rbenv/rbenv#homebrew-on-mac-os-x). There's no need to install the rehash gem because it was deprecated; the functionality from this gem was added to rbenv core.
 
-Linux users will need to download Ruby. I recommend Linux users read [this](https://launchschool.com/blog/how-to-install-ruby-on-rails-development-environment-for-linux)
-) blog post to get set up on RBENV for Ubuntu Linux. For our purposes you only need to follow step 3, although there is more good advice on setting up a nice development environment.
+For Linux users you can likewise ignore cloning the rehash gem.
 
-One thing to note, you can ignore running cloning the rehash gem. This gem is deprecated because this functionality was added to RBENV.
+Remember to set your global Ruby version!
 
 ### Part II: Getting our theme
 
@@ -126,6 +126,8 @@ Something that isn't explicity spelled out anywhere I've found is that when upda
 
 There's no need to run `jekyll build` if you're using a Github Pages user organizations page with this configuration.
 
-Read the [Jekyll](http://jekyllrb.com/) documentation to get a better handle on what frontmatter is, and other sometimes Jekyll specific quirks, but you've got a working site now. Hooray!
+Finally, make sure to read some the [Jekyll](http://jekyllrb.com/) documentation to get a better handle on [how Jekyll works](https://jekyllrb.com/docs/usage/), the [configuration file](https://jekyllrb.com/docs/configuration/) system, and what [frontmatter](https://jekyllrb.com/docs/frontmatter/) is. 
 
-If something isn't clear, doesn't work right, or you have other suggestions then feel free to let me know.
+A shortcut to a solid understanding of all the moving parts is to just use one of the posts included in the `_posts` directory for your first post to get you started. Don't forget to use `jekyll serve` to see preview your changes!
+
+If something isn't clear, doesn't work right, or you have other suggestions then feel free to let me know. Also feel free to check out the project's [Github repository](https://github.com/dylankb/dylankb.github.io).
