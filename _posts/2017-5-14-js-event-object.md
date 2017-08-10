@@ -7,21 +7,17 @@ comments: true
 ![A clear crystal](/assets/crystal.jpg)
 [^1] _A post about asking questions to get Crystal Clear™, incidentally about event objects_
 
-In the early days of the web, users navigated through web pages and applications rather slowly for a number of reasons, but in part it was because they were doing it one refresh at a time. Basically, any navigation or application state change needed to be sent as a request to the server, and these changes could only become visible to user after the page reloaded (refreshed).
+In the early days of the web, users navigated through web pages and applications rather slowly for a number of reasons, but in part it was because they were doing it one page refresh at a time. Basically, any navigation or application state change on a page needed to be sent as a request to the server, and these changes could only become visible to the user after the response delivered new HTML to browser and it reloaded (refreshed) completely to rebuild the page. JavaScript allowed web developers to fundamentally change this paradigm, making it one of the most important programming languages for modern day web applications.
 
-The ability to execute code in a browser environment has made JavaScript one of the most important programming languages of the day, because it allowed web developers to fundamentally change this paradigm. JavaScript made it possible to access a faster and more interactive web experiences by allowing page changes happen without needing a full page refreshes. This is due in part because JavaScript "knows how to wait".
+JavaScript changed modern development by allowing page changes to occur without making the page go through a full request/response cycle and page reload. This made it possible users to access faster, more interactive web experiences. Part of the reason that JavaScript was able to make this impact is because "knows how to wait". What I mean by that is JavaScript application code on the browser usually needs to wait for something to transpire first before running, for example a user's click. A key piece of the puzzle to allow that to execute conditionally based on events is the __event object__. An event object represents <u>data related to how, what, and when an event in the browser occurred</u>. When I ran into the concept of events, I wanted to be sure I was pretty clear on the principles that underly JavaScript's ability to create, register, listen, and execute event-based code.
 
-Now let me explain what that means - JavaScript application code on the browser usually needs to wait for something to transpire first before running, for example a user's click. A key technology to allow that allows snippets of code to execute conditionally based on events is the __event object__. <u>An event object represents information related to how, what, and when an event in the browser happens.</u>
-
-<u>When I ran into the concept of events, I wanted to be sure I was pretty clear on the principles that underly JavaScript's ability to create, register, listen, and execute event-based code.</u>
-
-Below are some questions, and hopefully answers, that mirror some of the confusions I had when learning about JavaScript events. But first, let's go over some facts about browser events and JS events.
+Below are some questions, and hopefully answers, that mirror some of the confusions I had when learning about JavaScript events. But first, let's go over some facts about browser events.
 
 ### Events - If only we listen, they will be heard
 
 The browser and DOM are firing events all the time regardless of what code we've written.
 
-Besides obvious ones like a user clicking on the page, we also have things like the `DOMContentLoaded` event, which occurs when the DOM is parsed from HTML, and `Window.onload`, fires once all of the page's assets are finished loading. Besides certain browser based events affecting how quickly how our application runs, they can't influence what code our application runs until we listen for them.
+Besides obvious ones like a user clicking on the page, we also have things like the `DOMContentLoaded` event, which occurs when the DOM is parsed from HTML, and `Window.onload`, fires once all of the page's assets are finished loading. However, apart from the fact that certain browser based events telling us things how well or quickly our application runs, they can't influence how code our application runs until we listen for them.
 
 Event-based code is the process of tying the execution of these events to code in our applications.
 
@@ -31,7 +27,7 @@ So, let's briefly overview what event implementation, capturing, bubbling are to
 
 #### Setting up an event listener
 
-Elements, windows, documents and more all implement the [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) interface which allows developers to add [EventListeners](https://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-EventListener) (usually) via the `addEventListener` method which specifies an event type and a callback.
+Elements, windows, documents and more all implement the [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) interface which allows developers to add [EventListeners](https://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-EventListener), often via the `addEventListener` method, which specifies an event type and a callback.
 
 ```js
 document.addEventListener('click',
@@ -53,13 +49,13 @@ If the user clicks on the button element in the browser, then their console woul
 MouseEvent { currentTarget: null, target: div, type: 'click' }
 ```
 
-The actual object contains more properties than I've listed above, but we won't be covering those in this article. Don't worry about the `currentTarget` here or why it's `null`, we'll go over that a little later.
+The actual object contains more properties than I've listed above, but we won't be covering those in this article. Also, don't worry about the `currentTarget` here or why it's `null`, we'll go over why that is a little later.
 
 If you're curious about all the properties that are on the event object, you can open this [Codepen](https://codepen.io/dylankb/pen/ZyyEeP?editors=1010) and your browser's developer tools to see the logged object in the Console tab.
 
 #### Event DOM traversal & Propagation
 
-I should also point out that an event traverses (moves throughout) the DOM, and there are certain rules which dictate this behavior.
+I should also point out that an event traverses (moves across) the DOM when it dispatches, and there are certain rules which dictate this behavior.
 
 ![An event traversing through the DOM tree](assets/event-bubbling.png)
 
@@ -209,9 +205,9 @@ The functionality is entirely the same - all that's different is it prepends "IN
 
 Hmm, when clicking on button our output appears to be the same as before - it's as if nothing seems to have changed.
 
-What's happened is we've created a subtle bug. If you were to insert a debugging statement or a `console.log` within `innerLogger`, you would see that the `innerLogger` event handler does indeed fire. The problem is that our `logger` event handler ALSO fires. In the first question we already confirmed that parent elements with event listeners will fire when the specified event occurs on their child elements. In this case, a button click bubbles  event travels up through each successive parent element until reaching the `window` element. The effect is that the output of `innerLogger` is replaced, or overwritten, by the output of `logger`.
+What's happened is we've created a subtle bug. If you were to insert a debugging statement or a `console.log` within `innerLogger`, you would see that the `innerLogger` event handler does indeed fire. The problem is that our `logger` event handler ALSO fires. In the first question we already confirmed that parent elements with event listeners will fire when the specified event occurs on their child elements. In this case, a button click bubbles up through each successive parent element until reaching the `window` element. The effect is that the output of `innerLogger` is replaced, or overwritten, by the output of `logger`.
 
-In this case, stopping the continued propagation of the `click` event is the solution. Comment out line 2 in the Codepen to see a working solution.
+In this case, stopping the continued propagation of the `click` event is the solution. We can stop the event from continuing to traverse (or propagate) across the DOM by commenting out line 2 in the Codepen. Once that's done, we can now have separate logging behavior for the `button` and `div` click events.
 
 In summary, one implication of DOM traversal is parent elements that share the same click event may fire. The reason that parent elements may fire after is due to bubbling. If we were using capturing, the result would be the parent elements or "top" elements would fire first.
 
