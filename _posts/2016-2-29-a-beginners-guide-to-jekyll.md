@@ -92,6 +92,8 @@ gems:
   - jekyll-gist
 ```
 
+UPDATE 10/2017: I ran into gem conflict issues with `jekyll-gist`, possibly due some complications from the Jekyll environment moving from Jekyll 2 to Jekyll 3.
+
 This means that we'll need to install these gems, along with the `jekyll` gem itself, in order to serve HTML & CSS using our Jekyll project. Run the line below to install these gems:
 
 `gem install jekyll, jekyll-paginate, jekyll-gist`
