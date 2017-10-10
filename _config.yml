@@ -30,9 +30,8 @@ sass:
   style:            :compressed
 
 # Plugins
-gems:               
-  - jekyll-paginate 
-  - jekyll-gist
+plugins:
+  - jekyll-paginate
 
 # Syntax details
 kramdown:
