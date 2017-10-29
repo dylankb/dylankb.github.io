@@ -38,20 +38,20 @@ In our investigation of joins we'll first look at using JOINs to accomplish a ty
 
 ### Counting with JOINs
 
-SQL obviously gives you the ability query for rows of data from your database, but it also provides ways of analyzing "meta information" about your queried results. One example common SQL analyis task is counting. By counting, we mean that our database is able to compute a numerical count about some type of data returned for a given query, for example the number of rows that were returned.
+SQL obviously gives you the ability query for rows of data from your database, but it also provides ways of analyzing "meta information" about your queried results. One example common SQL analysis task is counting. By counting, we mean that our database is able to compute a numerical count about some type of data returned for a given query. For example, we can use SQL to count the number of rows that were returned for a given query.
 
 Our first example of counting things with SQL will be an example of counting on a One-to-One relationship.
 
 #### One-to-One relationship
 
-If you look up the [technical definition](https://en.wikipedia.org/wiki/One-to-one_(data_model)) of a One-to-One relationship, you'll see that all `one-to..`, `many-to..` type relationships are a way of describing the cardinality between two entities. Our two entities in this example are a user and an address, and since it's a One-to-One relationship a user belongs to one address and an address belongs to one user.
+If you look up the [technical definition](https://en.wikipedia.org/wiki/One-to-one_(data_model)) of a One-to-One relationship, you'll see that all One-to.., Many-to.. type relationships are a way of describing the **cardinality**, or number of instances on each side of the relationship. Our two entities in this example are a user and an address, and since it's a One-to-One relationship a user belongs to one address and an address belongs to one user.
 
 The basics of counting with One-to-One relationships are pretty easy, especially when using `INNER JOIN`. Let's look at an example. First we'll look for all users who have an address.
 
 ```sql
 SELECT COUNT(users.id)
-FROM users
-  INNER JOIN addresses ON (addresses.user_id = users.id);
+  FROM users
+ INNER JOIN addresses ON (addresses.user_id = users.id);
 ```
 ```
  count
@@ -61,12 +61,12 @@ FROM users
 
 An `INNER JOIN` "...returns a result set that contains the common elements of the tables..."[^1], so we can describe the query above as counting the number of users (by `id`) who have an `id` that matches a `user_id` column in an `addresses` table row. It's a pretty simple query and we understand the cardinality (relationship type) we're joining on, so it's probably correct. The nice thing about working with small data sets is that we don't have to settle for "probably correct" - we can check it out for ourselves!
 
-Let's change our query to not restrict results in the SELECT statement, but instead show more results returned by the JOIN. Note that I'm aliasing the `users` table with a `u` and the addresses table with an `a`.
+Let's change our query to not restrict results in the `SELECT` statement, but instead show more results returned by the JOIN. Note that I'm aliasing the `users` table with a `u` and the addresses table with an `a`.
 
 ```sql
 SELECT u.id, u.username, a.street, a.city, a.state
-FROM users u
-  INNER JOIN addresses a ON (a.user_id = u.id);
+  FROM users u
+ INNER JOIN addresses a ON (a.user_id = u.id);
 ```
 ```
  id |  username   |     street      |     city      | state
@@ -82,7 +82,7 @@ If we recall the description of this dataset from earlier, the user-address rela
 
 ```sql
 SELECT u.id, u.username, a.street, a.city, a.state
-FROM users u
+  FROM users u
   LEFT OUTER JOIN addresses a ON (a.user_id = u.id);
 ```
 ```
@@ -103,8 +103,8 @@ A book has many reviews, so let's try finding the count of books with reviews.
 
 ```sql
 SELECT COUNT(books.title)
-FROM reviews
-  INNER JOIN books ON (books.id = reviews.book_id);
+  FROM reviews
+ INNER JOIN books ON (books.id = reviews.book_id);
 ```
 ```
 3
@@ -128,8 +128,8 @@ As we can see, we need to be a bit more careful when executing JOINs on non One-
 
 ```sql
 SELECT COUNT(DISTINCT books.title)
-FROM reviews
-  INNER JOIN books ON (books.id = reviews.book_id);
+  FROM reviews
+ INNER JOIN books ON (books.id = reviews.book_id);
 ```
 ```
 2
@@ -141,8 +141,8 @@ Let's look at subqueries, because subqueries work a bit differently, and we'll s
 
 ```rb
 SELECT COUNT(books.id)
-FROM books
-WHERE id IN (SELECT book_id FROM reviews);
+  FROM books
+ WHERE id IN (SELECT book_id FROM reviews);
 ```
 ```
 2
@@ -166,19 +166,21 @@ To be a bit more clear, the above query is essentially saying "For each book, ch
 
 ### Working with Many-to-Many Relationships
 
-We'll primarily be working with our "library-esque" dataset we've been using, but we'll focus on several tables that deal with two entities: users and books. These two entities share a "many-to-many" relationship; users can have many books and books can have many users.
+We'll continue working with the fake library data we've been using, but now we'll focus on a couple new tables that deal with the relationship between two entities: users and books. Users and books share a "many-to-many" relationship; users can have many books and books can have many users.
 
-There are three tables that facilitate this relationship: `users`, `books`, and the join table `users_books`. When working with a Many-to-Many relationship, you set up a third join table to hold the combination of user and book primary keys. I think about this table as the "checkouts" that happen. Here's a entity relation diagram that illustrates the relationship between these tables.
+There are three tables that represent this relationship: `users`, `books`, and `users_books`. When working with a Many-to-Many relationship you set up a third table, known as the join table, which provides data on the relationship between the two main tables (`users` and `books`). In this case `users_books`, I think about the table as representing the data for "checkouts" that happen at a library. Therefore at a minimum a join table row (i.e. one "book checkout") will need to include data that identifies one user and one book. A join table row does this by including at a minimum two columns: one column from each of the two main tables to serve as identifying keys. Because keys from one table now also reside on another table, they're referred to as _foreign keys_. Here's an entity relation diagram to help illustrate the relationship we just described between the `users` and `books` tables. The letter P represents the primary keys and the letter F represents foreign keys.
 
 ![](/assets/users-books.png)
+
+SQL is a large topic, so it will be a bit easier to get started by identifying a specific question and then trying to answer it. Let's try to create a relatively straightforward query to retrieve the records of each book checkout that happened at the library. The data for a book checkout should include the user's name that checked out the book and the book's title.
 
 Here's a query on a Many-to-Many relationship that's similar to one found in the LaunchSchool book's JOIN section.
 
 ```sql
 SELECT users.username, books.title
-FROM users
-INNER JOIN users_books ON (users_books.user_id = users.id)
-INNER JOIN books ON (books.id = users_books.book_id);
+  FROM users
+ INNER JOIN users_books ON (users_books.user_id = users.id)
+ INNER JOIN books ON (books.id = users_books.book_id);
 ```
 ```
 username    |       title        
@@ -192,9 +194,9 @@ Jane Smiley | My Second SQL book
 
 ```sql
 SELECT users.username, books.title
-FROM users
-INNER JOIN books ON (books.id = users_books.book_id) /* Switched order */
-INNER JOIN users_books ON (users_books.user_id = users.id);
+  FROM users
+ INNER JOIN books ON (books.id = users_books.book_id) /* Switched order */
+ INNER JOIN users_books ON (users_books.user_id = users.id);
 ```
 ```
 ERROR:  missing FROM-clause entry for table "users_books"
@@ -210,29 +212,28 @@ So let's start building up this query that broke, starting with one of the simpl
 ```sql
 /* Adding additional info to SELECT to show more data */
 SELECT u.id, u.username
-FROM users u
+  FROM users u
 ```
 
-`FROM users` brings in the data we see below to start off our intermediary/virtual table.
+`FROM users` brings in the data displayed in our results.
 
-| id |  username   |
-|----|-------------|
-| 1 | John Smith  |
-| 2 | Jane Smiley |
-| 3 | Alice Munro |
+ id |  username   
+----|-------------
+ 1 | John Smith  |
+ 2 | Jane Smiley |
+ 3 | Alice Munro |
 
 Ok, now that we've got some users, we just need query for books, right? Without considering how you query a Many-to-Many relation, you might indeed think this and go straight to writing this join next.
 
 ```sql
-RIGHT JOIN books ON (books.id = users_books.book_id)
+INNER JOIN books ON (books.id = users_books.book_id)
 ```
 
 Here's the whole query so far.
 
 ```sql
 SELECT u.id, u.username
-FROM users u
-INNER JOIN books ON (books.id = users_books.book_id)
+  FROM users u INNER JOIN books ON (books.id = users_books.book_id);
 ```
 
 Let's run it.
@@ -242,14 +243,16 @@ ERROR:  missing FROM-clause entry for table "users_books"
 LINE 3: INNER JOIN books ON (books.id = users_books.book_id)
 ```
 
-Hmm, looks like we don't have access to the `users_books` table. It's hard to tell if we have access to the `books` table since our query threw an error, so let's try another similar query.
+Hmm, looks like we don't have access to the `users_books` table. It's hard to tell if we retrieved `books` rows in our result table in our last query since it threw an error, so let's try another similar one.
 
 ```sql
 SELECT u.id, u.username, books.title
-FROM users u
-INNER JOIN books ON (books.id IS NOT NULL);
+  FROM users u
+ INNER JOIN books ON (books.id IS NOT NULL);
 ```
 ```
+id |  username   |       title        
+----+-------------+--------------------
   1 | John Smith  | My First SQL book
   2 | Jane Smiley | My First SQL book
   3 | Alice Munro | My First SQL book
@@ -259,27 +262,25 @@ INNER JOIN books ON (books.id IS NOT NULL);
   1 | John Smith  | My Third SQL book
 ```
 
-This query is a little strange, rather than doing a traditional `INNER JOIN` it's essentially running a `CROSS JOIN` on all users and books, but it does tells us something important.
+This query is a little strange - rather than doing a traditional `INNER JOIN` it's returning the [Cartesian product](https://en.wikipedia.org/wiki/Cartesian_product) of our two tables which is essentially what a `CROSS JOIN` does. The result itself isn't very useful, but it does tells us something important:
 
-**1) JOINs add data from the table referenced immediatley after the `JOIN` command**
+**1) A JOIN adds data from the table referenced immediately after the `JOIN` command**
 
-In this case, the `INNER JOIN` added `books` table rows to our data.
+Even though this query was strange, one observation from it was that our `JOIN` added `books` table rows to our results data.
 
-Our inability to access `users_table` tells us something else.
+Thinking back to our original problem, our inability to access `users_table`, tells us something else.
 
 **2) You can only utilize data already added to your results table**
 
-This is a really important point for working with queries that join more than one table, such as queries on Many-to-Many relations.
-
-Another key to understanding this query is how to work with join tables. We need to first access a table that provides both user ids and book ids to provide a link between users and books. The `users_book` table has this data, so instead we need to first write a JOIN between our `users` to `user_books` tables.
+This is a really important point for working with queries that join more than one table. In terms of writing queries on Many-to-Many relations, this lets us know that we need to we need to first access results that provides both a link user and books. We can retrieve data that links the `users` and `books` tables by first joining on a join table because that will return both user ids and book ids. In this case, `users_book` is the join table, so instead we need to first write a JOIN between our `users` to `user_books` tables.
 
  ```sql
 /* Updating SELECT to show additional data */
  SELECT u.id, u.username, ub.user_id, ub.book_id
- ...
- INNER JOIN users_books ub ON (users_books.user_id = users.id)
+   FROM users u
+  INNER JOIN users_books ub ON (ub.user_id = u.id);
  ```
-The above query supplies table data basically equivalent to this:
+The above query returns these results:
 
 ```
 |id |  username   | user_id | book_id|
@@ -289,12 +290,13 @@ The above query supplies table data basically equivalent to this:
 | 2 | Jane Smiley |       2 |       2|
 ```
 
-Now it's time to find match the books our user's checked out to users. The next JOIN continues add data to our join table.
+Now it's time to match the books our user's checked out to users. The next JOIN continues to add data to our join table.
 
 ```sql
 SELECT u.id, u.username, ub.user_id, ub.book_id, b.id AS book_table_id, b.title
-...
-INNER JOIN books b ON (b.id = ub.book_id);
+  FROM users u
+ INNER JOIN users_books ub ON (ub.user_id = u.id)
+ INNER JOIN books b ON (b.id = ub.book_id);
 ```
 ```
 id |  username   | user_id | book_id | book_table_id |       title   |     
@@ -304,16 +306,16 @@ id |  username   | user_id | book_id | book_table_id |       title   |
 | 2 | Jane Smiley |       2 |       2 |       2 | My Second SQL book |
 ```
 
-This is the full query rather than the diff if that helps
+This is the full query rather than the diff if that helps.
 
 ```sql
 SELECT u.id, u.username, ub.user_id, ub.book_id, b.id AS book_id, b.title
-FROM users u
-INNER JOIN users_books ub ON (ub.user_id = u.id)
-INNER JOIN books b ON (b.id = ub.book_id);
+  FROM users u
+ INNER JOIN users_books ub ON (ub.user_id = u.id)
+ INNER JOIN books b ON (b.id = ub.book_id);
 ```
 
-Then all you need to do is be more selective with what data you show by changing your SELECT query to the below:
+Then all you need to do is be more selective with what data you show by changing your `SELECT` query to the below:
 
 ```sql
 SELECT users.username, books.title
@@ -328,5 +330,7 @@ Which gets you this:
 | John Smith  | My Second SQL Book |
 | Jane Smiley | My Second SQL Book |
 ```
+
+Hopefully the inner workings on JOINs on Many-to-Many relationships are a bit less opaque now.
 
 [^1]: https://launchschool.com/books/sql/read/joins#innerjoins
