@@ -45,7 +45,7 @@ LINE 3: INNER JOIN books ON (books.id = users_books.book_id)
 
 Annnnnd I broke it.
 
-When you break something and don't know why, that's a clear indication that you have some gaps in your knowledge. What helped me finally get a strong grasp of how this type of join worked was to use some of the tools we've been practicing: displaying the data available to us, checking how this data can change, and using a small dataset to do so.
+When you break something and don't know why, that's a clear indication that you have some gaps in your knowledge. What helped me finally get a strong grasp of how this type of join worked was to use some of the tools we've been practicing: displaying the data available to us, checking how this data can change, and using a small data set to do so.
 
 So let's start building up this query that broke, starting with one of the simplest statements we can execute.
 
