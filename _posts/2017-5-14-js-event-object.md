@@ -5,17 +5,54 @@ comments: true
 ---
 
 ![A clear crystal](/assets/crystal.jpg)
-[^1] _A post about asking questions to get Crystal Clear™, incidentally about event objects_
+[^1] _A post about asking questions to get crystal clear™ about something, incidentally about event objects_
 
-In the early days of the web, users navigated through web pages and applications rather slowly for a number of reasons, but in part it was because they were doing it one page refresh at a time. Basically, any navigation or application state change on a page needed to be sent as a request to the server, and these changes could only become visible to the user after the response delivered new HTML to browser and it reloaded (refreshed) completely to rebuild the page. JavaScript allowed web developers to fundamentally change this paradigm, making it one of the most important programming languages for modern day web applications.
+I want to talk about the JavaScript event object in this post, but first I want to give it a bit of context so that it makes sense as something important to understand.
 
-JavaScript changed modern development by allowing page changes to occur without making the page go through a full request/response cycle and page reload. This made it possible users to access faster, more interactive web experiences. Part of the reason that JavaScript was able to make this impact is because "knows how to wait". What I mean by that is JavaScript application code on the browser usually needs to wait for something to transpire first before running, for example a user's click. A key piece of the puzzle to allow that to execute conditionally based on events is the __event object__. An event object represents <u>data related to how, what, and when an event in the browser occurred</u>. When I ran into the concept of events, I wanted to be sure I was pretty clear on the principles that underly JavaScript's ability to create, register, listen, and execute event-based code.
+### The early days
+
+In the early days of the web, users navigated through web pages and applications rather slowly for a number of reasons, but in part it was because they were doing it one page refresh at a time. A new tool for working with the web - JavaScript - made a significant impact in terms of how fast web sites seemed to users. Some of this was perception, but other innovations caused true paradigm shifts in how we use the web today. We'll be taking a look at how JavaScript made it possible users to access faster, more interactive web experiences, and in doing so how it changed web development forever.
+
+Here's a brief description of what the process for using the web used to looked like this for visiting a static webpage: a user opens their browser, which we'll refer to as the client, and click on a link or visits a URL. This initiates an HTTP GET request for a resource or document somewhere on the web. The server which hosts the resource or document is likely hundreds or thousands of miles away, and needs to send an HTTP response back to the client. Once this request is received, the document or resource will only become visible to the user after the response delivered new HTML to browser and it reloaded (refreshed) completely to rebuild the page. Needless to say, the unavoidable latency of HTTP and the need to constantly keep refreshing the page only made the web feel slow.
+
+The first problem JS solved was additional page interactivity - you couldn't do something as simple as change the color on a page before JavaScript.
+
+<p data-height="265" data-theme-id="0" data-slug-hash="goxxBM" data-default-tab="result" data-user="dylankb" data-embed-version="2" data-pen-title="Change background color" class="codepen">See the Pen <a href="https://codepen.io/dylankb/pen/goxxBM/">Change background color</a> by Dylan (<a href="https://codepen.io/dylankb">@dylankb</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+*Feel free to look at the source code of the snippet above, but in case you're not familiar with JavaScript or JavScript events, we'll be breaking down how this all works with examples later.*
+
+
+JavaScript had solved the problem of how to make the visuals of user interface feel more interactive for any webpage. Another trickier problem remained, though; working with web applications still felt very slow. Web applications use data, or state, to build up a page's UI, but fetching and retrieving data on a server was still felt like a relatively slow process. As a web application user, if you did something like update a value in your web application you had to go through a similar process that we described for static websites - you had to wait for your page to refresh to see any changes or new information in your client.
+
+![!Client-server architecture](/assets/client-server.png)
+
+*Diagram of client-server architecture, where user interactions almost always required a full browser refresh to become visible*[^2]
+
+If the ability to change page elements with clicks was a pretty big deal for websites, JavaScript events combined with the introduction XHR requests were a complete game changer for working with web applications. If a user wanted to interact with a web application, for example creating or updating a user profile, users could now asynchronously send data back to the server and update the DOM elements on the page with JavaScript. What this meant is that just because your application's data changed you didn't always need to go through a full request/response cycle and page reload to see the changes. This fundamental change in how users could interact with web sites and applications made JavaScript one of the most important programming languages for modern day web applications.
+
+Just to make what we're talking about a bit less nebulous, try comparing these two forms. The applications are each very smaller so they're already relatively fast, but the first one should at least seem to be a bit faster.
+
+ <!-- Embed Code -->
+ <div class="glitch-embed-wrap" style="height: 420px; width: 100%; border: 1px solid #C3C3C3; border-radius: 5px; box-shadow: 4px 4px #C3C3C3; background-color: white; overflow: hidden; margin-bottom: 20px;">
+   <iframe src="https://glitch.com/edit/#!/embed/express-form?path=server.js" style="height: 100%; width: 100%; border: 0;" alt="code example in glitch"></iframe>
+ </div>
+
+To get into a bit more detail about what's happening, the first form uses client-side JavaScript to submit data and inserts the new element in the DOM (page) using the jQuery library. The other requires visiting a new page and then going back to the original page before we can see our new any new data.
+
+We went over how JavaScript affected some of the web's history and development. This is a technical blog post, though, and while we looked at some examples of these changes we skipped over exactly *how* JavaScript made some of these changes possible. Although it's impossible to explain everything about how JavaScript works on the web in one small blog post, I would like to talk about one point in particular: the JavaScript event object.
+
+### The main event
+
+JavaScript leverages an interesting ability that helps it make web sites and applications feel more interactive - it "knows how to wait". What I mean by that is, JavaScript application code on the browser usually needs to wait for something to transpire first before running, for example a user's click. The most simple example we've seen so far has been clicking a button to have the background color change.
+
+A key piece of the puzzle to allowing code to execute only when a specific event happens is the __event object__. An event object represents <u>data related to how, what, and when an event in the browser occurred</u>. When I ran into the concept of events, I wanted to be sure I was pretty clear on the principles that underly JavaScript's ability to create, register, listen, and execute event-based code.
 
 Below are some questions, and hopefully answers, that mirror some of the confusions I had when learning about JavaScript events. But first, let's go over some facts about browser events.
 
 ### Events - If only we listen, they will be heard
 
-The browser and DOM are firing events all the time regardless of what code we've written.
+The browser and DOM are firing events all the time, regardless of what code we've written.
 
 Besides obvious ones like a user clicking on the page, we also have things like the `DOMContentLoaded` event, which occurs when the DOM is parsed from HTML, and `Window.onload`, fires once all of the page's assets are finished loading. However, apart from the fact that certain browser based events telling us things how well or quickly our application runs, they can't influence how code our application runs until we listen for them.
 
@@ -57,9 +94,9 @@ If you're curious about all the properties that are on the event object, you can
 
 I should also point out that an event traverses (moves across) the DOM when it dispatches, and there are certain rules which dictate this behavior.
 
-![An event traversing through the DOM tree](assets/event-bubbling.png)
+![An event traversing through the DOM tree](/assets/event-bubbling.png)
 
-_There are many overviews of DOM event traversal, but this one is mine_
+_There are many overviews of DOM event traversal, but this one is mine._
 
 When an element dispatches an event, all parent elements have the event fire in a _capturing_ phase, the target fires in the _target phase_, and parent elements again fire in the _bubbling phase_. The listener by default only executes the event handler code in the _target_ and _bubbling_ stages.
 
@@ -100,7 +137,7 @@ You'll notice that the `target` element changes depending on which of the two el
 
 If that seems like too simple of an explanation for you, I've got another one ;). In all seriousness, this may be a slightly less straightforward approach to thinking about how a `target` is set, but it actually was helpful in cementing my understanding.
 
-#### Branch depth: An alternative way about to think about target elements
+#### What is a click? A possible alternative way about to think about target elements.
 
 There is [a description](https://developer.mozilla.org/en-US/docs/Web/Events/click) for the `click` event's `target` property in the MDN documentation that doesn't seem entirely accurate, but it did help me think about how the target property is actually determined.
 
@@ -115,9 +152,9 @@ First, here's the our containing `div`, highlighted by Chrome devtools:
 Looking here, it clearly contains the `button` element nested inside it. Because it contains the `button` element, to click the `button` you have to effectively click on the `div` as well.
 
 Here's a DOM tree of our the markup in the previous code example: ![DOM tree node visual using button and container from post](/assets/dom-tree.png)
-[^2]
+[^3]
 
-Most representations of the DOM are "upside-down", in that nested elements are the branches that extend downwards. So in this case, the `button` element is "lower" than the `div`. We can think about the `div` node pictured above as a starting a distinct "branch" of the DOM tree. It's distinct in that containing elements lower down in the branch have a parent node (or element) with an attached event listener.
+Most representations of the DOM are "upside-down", in that nested elements are the branches that extend downwards. So in this case, the `button` element is "lower" than the `div`.[^4] We can think about the `div` node pictured above as a starting a distinct "branch" of the DOM tree. It's distinct in that containing elements lower down in the branch have a parent node (or element) with an attached event listener.
 
 So, let's review what we know.
 
@@ -127,9 +164,9 @@ So, let's review what we know.
 
 Now pretend we have an element with an event listener attached to it. If the element with the event listener or any other element lower than it on the branch is clicked, these elements can set a `target` property on a new event object. So in this case, either the `div` or the `button` could set the `target` property.
 
-If we click on button that's inside of `div`, how do we know which on will set the `target`? If you click on an element, the most specific to that click will be the one to set `target`. Another way of phrasing specific is to say, the "lowest" possible element down the given DOM tree branch. If you click directly on the `button`, sure you clicked the `div` as well, but the most specific one is the `button`. We can also see the `button` is lower on that branch.
+If we click on button that's inside of `div`, how do we know which on will set the `target`? If you click on an element, the most "specific" element relative to that click will be the one to set `target`. Another way of phrasing specific is to say, the "lowest" (i.e farthest from the root) element in a given DOM tree branch. If you click directly on the `button`, sure you clicked the `div` as well, but the most specific one is the `button` since it's lower on the branch of elements you clicked on.
 
-In summary, for a given click, whichever element was the "lowest" or "bottom-most" element in that DOM tree branch will set the `target` property. Not sure if that helps, but I thought that was an interesting way to think about something as simple as clicking something on a page :)
+In summary, for a given click, whichever element was the "lowest" or "bottom-most" element in that DOM tree branch under the click will set the `target` property. This digression might be more confusing than helpful, but I thought that was an interesting way to think about something as simple as clicking something on a page :)
 
 #### Dispatching events: Another target setting description
 
@@ -146,11 +183,9 @@ TLDR; In the example of the `click` event, the element you click on _should_ rel
 
 We came to a nice simple conclusion above that the target property is basically whatever element you directly clicked on. But, how actually does the event object fire if you're not directly clicking on the parent element?
 
-Remember when I said that funny looking chart with arrows would be important, well that time has come.
+Remember when I said that funny looking chart with arrows would be important, well that time has come. Here it is again.
 
-Here, I'll even show it again for good reference.
-
-![An event traversing through the DOM tree](assets/event-bubbling.png)
+![An event traversing through the DOM tree](/assets/event-bubbling.png)
 
 So recall that all events:
 
@@ -278,13 +313,12 @@ To see the implications, click on the button below:
 
 Events are still attached to `div`, however, the `currentTarget` and `this` context are now both `button`. To rephrase the jQuery documentation above, this is because if a `selector` is provided, the event occurs not on the element the event listener was added to, but on the element(s) matching the `selector` within the parent. With our additional `selector` of `.button`, elements matching the selector are now the ones that call event listeners, and NOT the parent with the attached event.
 
-NO LONGER LOGGING PARENT STUFF IN CODEPEN EXMPLE. IS THAT CORRECT?
-
 #### _Further reading_:
 
 1. MDN - [Introduction to Events](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events)
 2. MDN - [Overview of Events and Handlers](https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Overview_of_Events_and_Handlers)
 
 [^1]: [Photo](https://pixabay.com/en/crystal-rock-crystal-mineral-1685590/) / [CC BY](https://creativecommons.org/licenses/by/2.0/)  
-[^2]: Screenshot taken using https://dom-viewer.herokuapp.com/
-[^3]: "Top" or "above" usually means ["toward the "root"](https://www.w3.org/TR/DOM-Level-2-Events/glossary.html#dt-ancestor)
+[^2]: MDN - [Sending Form Data: About Client Server Architecture](https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Sending_and_retrieving_form_data)
+[^3]: Screenshot taken using https://dom-viewer.herokuapp.com/
+[^4]: "Top" or "above" usually means ["toward the "root"](https://www.w3.org/TR/DOM-Level-2-Events/glossary.html#dt-ancestor)
