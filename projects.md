@@ -5,6 +5,11 @@ title: Projects
 
 Here is where I'll post some of the personal projects I've worked on in the past. Some of the ideas may not be unique, but the implementations are my own.
 
+### [Layer](https://github.com/layr-team/Layr)
+
+  * An experimental decentralized system for anonymous and encrypted file storage across a peer-to-peer network.
+  * One of a three member remote development team.
+
 ### [Trello Clone](https://dkb-trello-clone.herokuapp.com/)
 
   * A partial clone of your favorite todo app's functionality in Backbone.js, Express, Jade, Sass.
