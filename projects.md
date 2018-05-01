@@ -3,26 +3,61 @@ layout: page
 title: Projects
 ---
 
-Here is where I'll post some of the personal projects I've worked on in the past. Some of the ideas may not be unique, but the implementations are my own.
+Here are some of the personal projects I've worked on in the past.
 
-### [Layer](https://github.com/layr-team/Layr)
+### Layr
 
-  * An experimental decentralized system for anonymous and encrypted file storage across a peer-to-peer network.
-  * One of a three member remote development team.
+What if you don't trust the companies who host your files? To explore an alternative to services like Amazon S3 or Dropbox, I co-created an experimental, decentralized
+cloud file storage system with private and secure file storage across a peer-to-peer network.
 
-### [Trello Clone](https://dkb-trello-clone.herokuapp.com/)
+![](/assets/layr_upload_download_demo.gif)
 
-  * A partial clone of your favorite todo app's functionality in Backbone.js, Express, Jade, Sass.
-  * Here are some [slides](https://docs.google.com/presentation/d/1ymAg08RjnPeAAlTWuD2enmiEoKEoq9rXvPHmntbgIt4/edit?usp=sharing) documenting my planning and thought process for creating this app.
-  * Link to code on [Github](https://github.com/dylankb/trello-clone)
+<p>Buzzwords that apply to this project include: Kademlia distributed hash table (DHT), P2P networks, cryptocurrency transactions, smart contracts, and proofs of retrievability.</p>
 
-### Tech In PDX
-  * Rails app for helping developers find relevant tech companies in the Portland, Oregon area.
-  * Link to code on [Github](https://github.com/dylankb/tech-in-pdx)
+<a class="button" href="https://layr-team.github.io/layr-project/">
+  Project overview / Write up
+</a>
+<a class="button" href="https://github.com/layr-team/Layr">
+  View on Github
+</a>
 
-### [Sprinter](http://sprintapp.herokuapp.com)
+### Trello-Bone
+
+A mostly* pixel-perfect rendition of Trello featuring cards, lists, and drag-n-drop functionality, written in Backbone.js, Express.js, and CSS/Sass.
+
+![](/assets/trello_bone.png)
+
+<a class="button" href="https://trello-bone.herokuapp.com/">
+  Demo
+</a>
+<a class="button" href="https://github.com/dylankb/trello-bone">
+  View on Github
+</a>
+<a class="button" href="https://docs.google.com/presentation/d/1ymAg08RjnPeAAlTWuD2enmiEoKEoq9rXvPHmntbgIt4/edit?usp=sharing">
+  Planning process slides
+</a>
+
+### Tech-In-PDX
+
+Rails app for helping developers find relevant tech companies in the Portland, Oregon area.
+
+![](/assets/tech-in-pdx.png)
+
+<a class="button" href="https://github.com/dylankb/tech-in-pdx">
+  View on Github
+</a>
+
+### Sprinter
 
   * The first thing I ever deployed!
   * Ruby/Sinatra web application to help people focus on completing two week goals and tasks.
   * Export and upload tasks to your Google Calendar.
-  * Link to code on [GitHub](https://github.com/dylankb/sprinter).
+
+  ![](/assets/sprinter.png)
+
+  <a class="button" href="http://sprintapp.herokuapp.com">
+    Demo
+  </a>
+  <a class="button" href="https://github.com/dylankb/sprinter">
+    View on Github
+  </a>

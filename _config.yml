@@ -13,13 +13,12 @@ permalink:           pretty
 # Setup
 title:               Dylan Barnard
 url:                 http://dylankb.github.io/
-paginate:            1
 baseurl:             ""
 
 # Structure
 pages_list:
-  About: '/about/'
-  Archive: '/archive/'
+  About Me: '/about-me/'
+  Blog: '/archive/'
   Projects: '/projects/'
 
 # Assets
@@ -31,7 +30,6 @@ sass:
 
 # Plugins
 plugins:
-  - jekyll-paginate
 
 # Syntax details
 kramdown:

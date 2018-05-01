@@ -1,0 +1,18 @@
+.button-container {
+  display: inline-flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.button {
+  flex: 0 0 110px;
+  text-align: center;
+  margin: 5px;
+  background: #268bd2;
+  padding: 10px 20px;
+  color: #fff;
+}
+
+.add-bottom-margin {
+  margin-bottom: 30px;
+}
