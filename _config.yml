@@ -20,6 +20,7 @@ pages_list:
   About Me: '/about-me/'
   Blog: '/archive/'
   Projects: '/projects/'
+  Resume: '/assets/dylanbarnard_resume.pdf/'
 
 # Assets
 #
