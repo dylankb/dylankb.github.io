@@ -32,7 +32,7 @@ An Introduction to Building Decentralized (P2P) Applications @ [Waffle.js](https
   <a href="https://github.com/dylankb" class="button">
     GitHub
   </a>
-  <a href="https://github.com/dylankb)" class="button">
+  <a href="https://www.linkedin.com/in/dylankb/" class="button">
     LinkedIn
   </a>
   <a href="https://twitter.com/dkbarns" class="button">
