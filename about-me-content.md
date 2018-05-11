@@ -8,7 +8,7 @@ Before my life in tech, I tried my hand at a range of jobs that ranged from fish
 
 ### Recent work
 
-I co-created an experimental, decentralized cloud file storage system. Click below to read more.
+I co-created an experimental, decentralized cloud file storage system called Layr. If you're interested in privacy issues with the cloud, ensuring redundant data across a system, or data structures to power P2P networks, then you should read about our journey of solving tricky problems.
 
 <div class="add-bottom-margin">
   <a href="https://layr-team.github.io/layr-project" class="button">
