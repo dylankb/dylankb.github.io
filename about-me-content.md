@@ -4,7 +4,7 @@
 
 My name is Dylan Barnard and I'm a software engineer with 2 years of experience working with React, Rails, and Ember, including with Ember's core team. I like building thoughtful solutions for technical problems with the people, for the people.
 
-Before my life in tech, I tried my hand at a range of jobs that ranged from fishing for salmon off the Bering Sea to managing the launch of a research platform at a Beijing-based startup.
+Before my life in tech, I tried my hand at a range of jobs that ranged from fishing for salmon off the Bering Sea to managing the launch of a research platform at a Beijing-based startup. Feel free to ask me about any of the above!
 
 ### Recent work
 
@@ -16,9 +16,11 @@ I co-created an experimental, decentralized cloud file storage system called Lay
   </a>
 </div>
 
-#### Upcoming talks
+#### Upcoming and previous talks
 
-An Introduction to Building Decentralized (P2P) Applications @ [Waffle.js](https://wafflejs.com/#schedule) - 5/29
+An Introduction to Building Decentralized (P2P) Applications
+ - @ [Waffle.js](https://wafflejs.com/#schedule) - 5/29
+ - @ [SFNode](https://www.meetup.com/sfnode/events/250440975/) - 7/12
 
 ### Looking for my new team
 
