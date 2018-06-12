@@ -16,7 +16,7 @@ I co-created an experimental, decentralized cloud file storage system called Lay
   </a>
 </div>
 
-#### Upcoming and previous talks
+### Talks
 
 An Introduction to Building Decentralized (P2P) Applications
  - @ [Waffle.js](https://wafflejs.com/#schedule) - 5/29
