@@ -19,9 +19,8 @@ I co-created an experimental, decentralized cloud file storage system called Lay
 ### Talks
 
 An Introduction to Building Decentralized (P2P) Applications
- - @ [Waffle.js](https://wafflejs.com/#schedule) - 5/29
- - @ [FogCity Ruby](https://www.meetup.com/fogcityruby/events/252239674/) - 7/10
- - @ [SFNode](https://www.meetup.com/sfnode/events/250440975/) - 7/12
+
+ <iframe width="640" height="360" src="https://www.youtube.com/embed/8sN3cT5T-5g?ecver=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ### Looking for my new team
 
