@@ -2,7 +2,7 @@
   <img class="headshot" src="../assets/dylan.jpg" alt="A picture of Dylan" />
 </p>
 
-My name is Dylan Barnard and I'm a software engineer with 2 years of experience working with React, Rails, and Ember, including with Ember's core team. I like building thoughtful solutions for technical problems with the people, for the people.
+My name is Dylan Barnard and I do software engineering work. I primarily focus on building scalable back end systems but have worked on web application front ends as well. I like building thoughtful solutions for technical problems with the people, for the people.
 
 Before my life in tech, I tried my hand at a range of jobs that ranged from fishing for salmon off the Bering Sea to managing the launch of a research platform at a Beijing-based startup. Feel free to ask me about any of the above!
 
@@ -22,12 +22,6 @@ An Introduction to Building Decentralized (P2P) Applications
 
  <iframe width="640" height="360" src="https://www.youtube.com/embed/8sN3cT5T-5g?ecver=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-### Looking for my new team
-
-<p class="message">
-  My current adventure is searching for a team I can build great products with. Please reach out if you would like to talk more!
-</p>
-
 #### Getting in touch:
 
 <div class="button-container">
@@ -39,7 +33,4 @@ An Introduction to Building Decentralized (P2P) Applications
   </a>
   <a href="https://twitter.com/dkbarns" class="button">
     Twitter
-  </a>
-  <a href="mailto:dylan.barnard@gmail.com" class="button">
-    Email
   </a>
