@@ -9,7 +9,7 @@ That was the first and last personal post I had on here - everything else on her
 
 ### The code itch
 
-Back about five years ago I was winding down my time at a start up. I'd joined when there were only one to two part time founders and we'd grown all the way to more than twenty employees before things started to go down hill. During that I'd worked in a bunch of roles - sales, translation, project and product roles, etc. - and I had some time to reflect about what I'd actually enjoyed. The times I most enjoyed at work were when I worked with engineers to write bits of HTML and hacky Python to try and bootstrap a platform we were trying to bootstrap. Getting to experience the act of creation was new for me as a non-build/artist but felt awesome! I wanted to know more.
+Back about five years ago I was winding down my time at a start up and had a chance to reflect on my time there. I'd worked in a bunch of roles at the company - sales, translation, project and product roles, etc. - and I realized I most . The times I most enjoyed at work were when I worked with engineers to write bits of HTML and hacky Python to try and bootstrap a platform we were trying to bootstrap. Getting to experience the act of creation was new for me as a non-build/artist but felt awesome! I wanted to know more.
 
 ### The wilderness
 
